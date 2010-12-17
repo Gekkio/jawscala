@@ -28,3 +28,41 @@ Useful things for developers using [Vaadin](http://vaadin.com).
         myButton.addListener { e: Button#ClickEvent =>
           println("Profit!")
         }
+
+### <a name="jawscala-zk">jawscala-zk</a>
+
+Useful things for developers using [ZK](http://www.zkoss.org).
+
+#### Features
+
++ Growl-like notifications (uses [Gritter for jQuery](https://github.com/jboesch/Gritter))
+
+#### Usage
+
+##### Gritter
+
+        import fi.jawsy.jawscala.zk.Gritter
+
+Display a simple notification:
+
+        Gritter.add(title = "My title", text = "My text")
+
+Display a sticky notification:
+
+        Gritter.add(title = "My title", text = "My text", sticky = true)
+
+Display a notification with image (supports ZK-style URLs, for example `~./classpath_image.png`):
+
+        Gritter.add(title = "My title", text = "My text", image = "/image.png")
+
+Display a notification for x milliseconds:
+
+        Gritter.add(title = "My title", text = "My text", time = 9000)
+
+Display a notification with a custom CSS class:
+
+        Gritter.add(title = "My title", text = "My text", sclass = "error")
+
+Removing all notifications from screen (including sticky ones):
+
+        Gritter.removeAll()
