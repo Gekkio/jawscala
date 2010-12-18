@@ -7,6 +7,7 @@
 *.swp
 *~
 target/
+lib_eclipse/
 lib_local/
 lib_managed/
 project/boot/
