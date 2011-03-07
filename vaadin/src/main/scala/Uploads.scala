@@ -6,12 +6,12 @@ import java.io.OutputStream
 
 object Uploads {
 
-  def succeededListener(f: (Upload#SucceededEvent) => _) = new Upload.SucceededListener {
-    def uploadSucceeded(e: Upload#SucceededEvent) = f(e)
+  def succeededListener(f: (Upload.SucceededEvent) => _) = new Upload.SucceededListener {
+    def uploadSucceeded(e: Upload.SucceededEvent) = f(e)
   }
 
-  def finishedListener(f: (Upload#FinishedEvent) => _) = new Upload.FinishedListener {
-    def uploadFinished(e: Upload#FinishedEvent) = f(e)
+  def finishedListener(f: (Upload.FinishedEvent) => _) = new Upload.FinishedListener {
+    def uploadFinished(e: Upload.FinishedEvent) = f(e)
   }
 
   def progressListener(f: (Long, Long) => _) = new Upload.ProgressListener {
@@ -22,8 +22,8 @@ object Uploads {
     def receiveUpload(filename: String, mimeType: String) = f(filename, mimeType)
   }
 
-  def startedListener(f: (Upload#StartedEvent) => _) = new Upload.StartedListener {
-    def uploadStarted(e: Upload#StartedEvent) = f(e)
+  def startedListener(f: (Upload.StartedEvent) => _) = new Upload.StartedListener {
+    def uploadStarted(e: Upload.StartedEvent) = f(e)
   }
 
   object Implicits extends Implicits

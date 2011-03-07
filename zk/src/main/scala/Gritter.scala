@@ -2,6 +2,7 @@ package fi.jawsy.jawscala
 package zk
 
 import net.liftweb.json.Implicits._
+import net.liftweb.json.Printer
 import net.liftweb.json.JsonAST._
 import net.liftweb.json.JsonDSL._
 import org.zkoss.json.JSONAware
@@ -20,7 +21,7 @@ object Gritter {
     time: Int = DefaultTime,
     sclass: String = ""
   ) extends JSONAware {
-    def toJSONString = compact(render(
+    def toJSONString = Printer.compact(render(
       ("title", title) ~
       ("text", text) ~
       ("image", Option(image).filter(!_.isEmpty).map(Executions.encodeURL)) ~

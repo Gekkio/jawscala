@@ -4,10 +4,12 @@ import sbt._
 class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
 
   object Versions {
-    val lift = "2.2-RC3"
-    val specs = "1.6.6"
-    val vaadin = "6.4.8"
-    val zk = "5.0.5"
+    val akka = "1.0"
+    val geronimoServlet = "1.0"
+    val lift = "2.3-M1"
+    val specs = "1.6.7.2"
+    val vaadin = "6.5.2"
+    val zk = "5.0.6"
   }
 
   lazy val vaadin = project("vaadin", "jawscala-vaadin", new JawscalaVaadin(_))
@@ -18,6 +20,8 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
   }
 
   class JawscalaZk(info: ProjectInfo) extends DefaultProject(info) with JRebelJarPlugin {
+    val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % Versions.akka % "provided" withSources
+    val geronimoServlet = "org.apache.geronimo.specs" % "geronimo-servlet_3.0_spec" % Versions.geronimoServlet withSources
     val liftJson = "net.liftweb" %% "lift-json" % Versions.lift withSources
     val zkZk = "org.zkoss.zk" % "zk" % Versions.zk withSources
     val zkZul = "org.zkoss.zk" % "zul" % Versions.zk withSources
@@ -25,6 +29,7 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
     val specs = "org.scala-tools.testing" %% "specs" % Versions.specs % "test" withSources
   }
 
+  val akkaRepo = "m2-akka" at "http://akka.io/repository"
   val zkossConfig = ModuleConfiguration("org.zkoss.*", zkossRepo)
   def zkossRepo = "m2-zk" at "http://mavensync.zkoss.org/maven2"
 
