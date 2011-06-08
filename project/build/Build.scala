@@ -7,7 +7,7 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
     val akka = "1.0"
     val geronimoServlet = "1.0"
     val lift = "2.4-M1"
-    val specs = "1.6.7.2"
+    val specs = "1.6.8"
     val vaadin = "6.5.2"
     val zk = "5.0.6"
   }
