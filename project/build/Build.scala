@@ -9,7 +9,7 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
     val lift = "2.4-M1"
     val specs = "1.6.8"
     val vaadin = "6.6.1"
-    val zk = "5.0.7"
+    val zk = "5.0.7.1"
   }
 
   lazy val vaadin = project("vaadin", "jawscala-vaadin", new JawscalaVaadin(_))
