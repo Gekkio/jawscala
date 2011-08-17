@@ -4,6 +4,7 @@ package zk
 import org.zkoss.zk.ui.Component
 import org.zkoss.zk.ui.event.{ Event, EventListener }
 import EventListeners.function1EventListener
+import org.zkoss.zk.ui.event.Deferrable
 
 object ComponentBinding {
 
@@ -45,17 +46,27 @@ object ComponentBinding {
 
   case class ReadWrite[C <: Component, T](readEvents: List[String], getter: (C) => T, writeEvents: List[String], setter: (C) => (T) => Unit) extends Read[C, T] with Write[C, T]
 
-  def bind[C <: Component, T](c: C, readFunction: => T)(implicit r: Read[C, T]): ReadBinder[C, T] = new ReadBinder[C, T] {
-    val readEventListener: EventListener = (e: Event) => read
+  def bindRead[C <: Component, T](c: C, readFunction: () => T, deferrable: Boolean = false)(implicit r: Read[C, T]): ReadBinder[C, T] = new ReadBinder[C, T] {
+    val readEventListener: EventListener = new EventListener with Deferrable {
+      def onEvent(event: Event) {
+        read
+      }
+      def isDeferrable = deferrable
+    }
     r.readEvents.foreach(c.addEventListener(_, readEventListener))
 
     def read {
-      r.setter(c)(readFunction)
+      r.setter(c)(readFunction())
     }
   }
 
-  def bind[C <: Component, T](c: C, writeFunction: (T) => _)(implicit w: Write[C, T]): WriteBinder[C, T] = new WriteBinder[C, T] {
-    val writeEventListener: EventListener = (e: Event) => write
+  def bindWrite[C <: Component, T](c: C, writeFunction: (T) => _, deferrable: Boolean = false)(implicit w: Write[C, T]): WriteBinder[C, T] = new WriteBinder[C, T] {
+    val writeEventListener: EventListener = new EventListener with Deferrable {
+      def onEvent(event: Event) {
+        write
+      }
+      def isDeferrable = deferrable
+    }
     w.writeEvents.foreach(c.addEventListener(_, writeEventListener))
 
     def write {
@@ -63,9 +74,9 @@ object ComponentBinding {
     }
   }
 
-  def bind[C <: Component, T](c: C, readFunction: => T, writeFunction: (T) => _)(implicit r: Read[C, T], w: Write[C, T]): ReadWriteBinder[C, T] = new ReadWriteBinder[C, T] {
-    private val readBinder = bind(c, readFunction)(r)
-    private val writeBinder = bind(c, writeFunction)(w)
+  def bind[C <: Component, T](c: C, readFunction: () => T, writeFunction: (T) => _, deferrable: Boolean = false)(implicit r: Read[C, T], w: Write[C, T]): ReadWriteBinder[C, T] = new ReadWriteBinder[C, T] {
+    private val readBinder = bindRead(c, readFunction, deferrable)(r)
+    private val writeBinder = bindWrite(c, writeFunction, deferrable)(w)
 
     val readEventListener = readBinder.readEventListener
     val writeEventListener = writeBinder.writeEventListener
