@@ -21,7 +21,7 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
 
   class JawscalaZk(info: ProjectInfo) extends DefaultProject(info) with JRebelJarPlugin {
     val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % Versions.akka % "provided" withSources
-    val geronimoServlet = "org.apache.geronimo.specs" % "geronimo-servlet_3.0_spec" % Versions.geronimoServlet withSources
+    val geronimoServlet = "org.apache.geronimo.specs" % "geronimo-servlet_3.0_spec" % Versions.geronimoServlet % "provided" withSources
     val liftJson = "net.liftweb" %% "lift-json" % Versions.lift withSources
     val zkZk = "org.zkoss.zk" % "zk" % Versions.zk withSources
     val zkZul = "org.zkoss.zk" % "zul" % Versions.zk withSources
