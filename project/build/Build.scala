@@ -33,11 +33,20 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
   val zkossConfig = ModuleConfiguration("org.zkoss.*", zkossRepo)
   def zkossRepo = "m2-zk" at "http://mavensync.zkoss.org/maven2"
 
+  override def managedStyle = ManagedStyle.Maven
+
+  val publishTo =
+    if (version.toString.endsWith("-SNAPSHOT"))
+    ("Nexus" at "https://jawsy.fi/nexus/content/repositories/snapshots")
+    else ("Nexus" at "https://jawsy.fi/nexus/content/repositories/releases")
+
+  Credentials(Path.userHome / ".ivy2" / "jawsy.credentials", log)
+
   override def pomExtra =
     <url>http://github.com/Gekkio/jawscala</url>
     <organization>
       <name>Jawsy Solutions</name>
-      <url>http://www.jawsy.fi</url>
+      <url>http://jawsy.fi</url>
     </organization>
     <licenses>
       <license>
