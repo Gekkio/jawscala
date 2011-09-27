@@ -13,22 +13,24 @@ import org.zkoss.zk.ui.Desktop
 import javax.servlet.http.{ HttpServletResponse, HttpServletRequest }
 
 object AtmosphereServerPush {
-  type Resource = AtmosphereResource[HttpServletRequest, HttpServletResponse]
-
-  private val attributeName = classOf[AtmosphereServerPush].getName
-
   val timeout = 300000
-
-  def readResource(desktop: Desktop) = Option(desktop.getAttribute(attributeName).asInstanceOf[Resource])
-  def writeResource(desktop: Desktop, resource: Resource) = desktop.setAttribute(attributeName, resource)
-  def clearResource(desktop: Desktop) = desktop.removeAttribute(attributeName)
 }
 
 class AtmosphereServerPush extends ServerPush {
 
   private val log = LoggerFactory.getLogger(this.getClass)
 
+  @volatile
   private var desktop: Option[Desktop] = None
+  @volatile
+  private var resource: Option[AtmosphereResource[HttpServletRequest, HttpServletResponse]] = None
+
+  def updateResource(resource: AtmosphereResource[HttpServletRequest, HttpServletResponse]) {
+    if (!this.resource.isDefined) {
+      resource.suspend(AtmosphereServerPush.timeout, false)
+      this.resource = Some(resource)
+    }
+  }
 
   def onPiggyback() {
   }
@@ -46,10 +48,10 @@ class AtmosphereServerPush extends ServerPush {
     scheduler.schedule(task, event)
     for {
       desktop <- this.desktop
-      resource <- AtmosphereServerPush.readResource(desktop)
+      resource <- this.resource
     } {
       resource.resume()
-      AtmosphereServerPush.clearResource(desktop)
+      this.resource = None
     }
   }
 
