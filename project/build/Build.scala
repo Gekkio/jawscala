@@ -5,6 +5,7 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
 
   object Versions {
     val akka = "1.2"
+    val atmosphere = "0.7.2"
     val geronimoServlet = "1.0"
     val lift = "2.4-M4"
     val specs = "1.6.9"
@@ -21,6 +22,7 @@ class JawscalaProject(info: ProjectInfo) extends ParentProject(info) {
 
   class JawscalaZk(info: ProjectInfo) extends DefaultProject(info) with JRebelJarPlugin {
     val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % Versions.akka % "provided" withSources
+    val atmospehereRuntime = "org.atmosphere" % "atmosphere-runtime" % Versions.atmosphere withSources
     val geronimoServlet = "org.apache.geronimo.specs" % "geronimo-servlet_3.0_spec" % Versions.geronimoServlet % "provided" withSources
     val liftJson = "net.liftweb" %% "lift-json" % Versions.lift withSources
     val zkZk = "org.zkoss.zk" % "zk" % Versions.zk withSources
