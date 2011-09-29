@@ -17,22 +17,22 @@ import org.zkoss.zk.ui.sys.DesktopCtrl
 
 class CometAtmosphereHandler extends AtmosphereHandler[HttpServletRequest, HttpServletResponse] {
 
-  def destroy() {}
+  def destroy() { }
 
-  private def lookupSession(request: HttpServletRequest): Either[String, Session] =
-    Option(WebManager.getSession(request.getServletContext, request, false)).toRight("Could not find session")
+  private def resourceSession(resource: AtmosphereResource[_, _], request: HttpServletRequest): Either[String, Session] =
+    Option(WebManager.getSession(resource.getAtmosphereConfig.getServletContext, request, false)).toRight("Could not find session")
 
-  private def lookupDesktopId(request: HttpServletRequest): Either[String, String] =
+  private def requestDesktopId(request: HttpServletRequest): Either[String, String] =
     Option(request.getParameter("dtid")).filter(!_.isEmpty).toRight("Could not find desktop id")
 
-  private def lookupDesktop(session: Session, dtid: String): Either[String, Desktop] =
+  private def sessionDesktop(session: Session, dtid: String): Either[String, Desktop] =
     session.getWebApp match {
       case webAppCtrl: WebAppCtrl =>
         Option(webAppCtrl.getDesktopCache(session).getDesktopIfAny(dtid)).toRight("Could not find desktop")
       case _ => Left("Web app does not implement WebAppCtrl")
     }
 
-  private def lookupServerPush(desktop: Desktop): Either[String, AtmosphereServerPush] =
+  private def desktopServerPush(desktop: Desktop): Either[String, AtmosphereServerPush] =
     desktop match {
       case desktopCtrl: DesktopCtrl =>
         desktopCtrl.getServerPush match {
@@ -43,16 +43,23 @@ class CometAtmosphereHandler extends AtmosphereHandler[HttpServletRequest, HttpS
       case _ => Left("Desktop does not implement DesktopCtrl")
     }
 
+  private def findServerPush(resource: AtmosphereResource[HttpServletRequest, HttpServletResponse]) = {
+    val request = resource.getRequest
+    for {
+      session <- resourceSession(resource, request).right
+      dtid <- requestDesktopId(request).right
+      desktop <- sessionDesktop(session, dtid).right
+      serverPush <- desktopServerPush(desktop).right
+    } yield serverPush
+  }
+
   def onRequest(resource: AtmosphereResource[HttpServletRequest, HttpServletResponse]) {
     val response = resource.getResponse
     val request = resource.getRequest
     response.setContentType("text/plain")
 
     (for {
-      session <- lookupSession(request).right
-      dtid <- lookupDesktopId(request).right
-      desktop <- lookupDesktop(session, dtid).right
-      serverPush <- lookupServerPush(desktop).right
+      serverPush <- findServerPush(resource).right
     } yield {
       serverPush.updateResource(resource)
     }).fold(
@@ -65,6 +72,15 @@ class CometAtmosphereHandler extends AtmosphereHandler[HttpServletRequest, HttpS
   }
 
   def onStateChange(event: AtmosphereResourceEvent[HttpServletRequest, HttpServletResponse]) {
+    val resource = event.getResource
+
+    if (event.isCancelled || event.isResumedOnTimeout) {
+      for {
+        serverPush <- findServerPush(resource).right
+      } {
+        serverPush.clearResource(resource)
+      }
+    }
   }
 
 }

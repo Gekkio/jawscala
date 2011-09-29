@@ -26,9 +26,14 @@ class AtmosphereServerPush extends ServerPush {
   private var resource: Option[AtmosphereResource[HttpServletRequest, HttpServletResponse]] = None
 
   def updateResource(resource: AtmosphereResource[HttpServletRequest, HttpServletResponse]) {
-    if (!this.resource.isDefined) {
-      resource.suspend(AtmosphereServerPush.timeout, false)
-      this.resource = Some(resource)
+    this.resource.foreach(_.resume())
+    resource.suspend(AtmosphereServerPush.timeout, false)
+    this.resource = Some(resource)
+  }
+
+  def clearResource(resource: AtmosphereResource[HttpServletRequest, HttpServletResponse]) {
+    if (this.resource == Some(resource)) {
+      this.resource = None
     }
   }
 
@@ -64,13 +69,13 @@ class AtmosphereServerPush extends ServerPush {
     for (desktop <- this.desktop) {
       log.debug("Starting server push for " + desktop)
       Clients.response("jawscala.serverpush",
-        new AuScript(null, "jawscala.startServerPush('" + desktop.getId() + "');"));
+        new AuScript(null, "jawscala.startServerPush('" + desktop.getId() + "', " + AtmosphereServerPush.timeout + ");"));
     }
   }
   def stop() {
     for (desktop <- this.desktop) {
       log.debug("Stopping server push for " + desktop)
-      Clients.response("jawscala.serverpush", new AuScript(null, "jawscala.stopServerPush('" + desktop.getId() + "', " + AtmosphereServerPush.timeout + ");"));
+      Clients.response("jawscala.serverpush", new AuScript(null, "jawscala.stopServerPush('" + desktop.getId() + "');"));
       this.desktop = None
     }
   }

@@ -1,10 +1,10 @@
 (function() {
-  jawscala.startServerPush = function(dtid) {
+  jawscala.startServerPush = function(dtid, timeout) {
     var dt = zk.Desktop.$(dtid);
     if (dt._serverpush)
       dt._serverpush.stop();
 
-    var spush = new jawscala.ServerPush(dt);
+    var spush = new jawscala.ServerPush(dt, timeout);
     spush.start();
   };
   jawscala.stopServerPush = function(dtid) {
@@ -15,9 +15,11 @@
   jawscala.ServerPush = zk.$extends(zk.Object, {
     desktop: null,
     active: false,
+    timeout: 300000,
 
-    $init: function(desktop) {
+    $init: function(desktop, timeout) {
       this.desktop = desktop;
+      this.timeout = timeout;
     },
     _send: function() {
       if (!this.active)
@@ -25,8 +27,8 @@
 
       var me = this;
       var jqxhr = $.ajax({
-        url: zk.ajaxURI("/async/comet"),
-        type: "POST",
+        url: zk.ajaxURI("/comet", { au: true }),
+        type: "GET",
         cache: false,
         async: true,
         global: false,
@@ -35,7 +37,10 @@
         },
         accepts: "text/plain",
         dataType: "text/plain",
-        timeout: 300000,
+        timeout: me.timeout,
+        error: function(jqxhr, textStatus, errorThrown) {
+          setTimeout(me.proxy(me._send), 1000);
+        },
         success: function(data) {
           zAu.cmd0.echo(me.desktop);
           setTimeout(me.proxy(me._send), 1000);
