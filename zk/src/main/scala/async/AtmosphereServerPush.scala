@@ -6,7 +6,7 @@ import org.atmosphere.cpr.AtmosphereResource
 import org.slf4j.LoggerFactory
 import org.zkoss.zk.au.out.AuScript
 import org.zkoss.zk.ui.event.{ EventListener, Event }
-import org.zkoss.zk.ui.sys.{ ServerPush, Scheduler }
+import org.zkoss.zk.ui.sys.{ DesktopCtrl, ServerPush, Scheduler }
 import org.zkoss.zk.ui.util.Clients
 import org.zkoss.zk.ui.Desktop
 
@@ -27,8 +27,16 @@ class AtmosphereServerPush extends ServerPush {
 
   def updateResource(resource: AtmosphereResource[HttpServletRequest, HttpServletResponse]) {
     this.resource.foreach(_.resume())
-    resource.suspend(AtmosphereServerPush.timeout, false)
-    this.resource = Some(resource)
+
+    val shouldSuspend =
+      desktop.map(!_.asInstanceOf[DesktopCtrl].scheduledServerPush).getOrElse(true)
+
+    if (shouldSuspend) {
+      resource.suspend(AtmosphereServerPush.timeout, false)
+      this.resource = Some(resource)
+    } else {
+      this.resource = None
+    }
   }
 
   def clearResource(resource: AtmosphereResource[HttpServletRequest, HttpServletResponse]) {
@@ -51,10 +59,7 @@ class AtmosphereServerPush extends ServerPush {
 
   def schedule(task: EventListener, event: Event, scheduler: Scheduler) {
     scheduler.schedule(task, event)
-    for {
-      desktop <- this.desktop
-      resource <- this.resource
-    } {
+    resource.foreach { resource =>
       resource.resume()
       this.resource = None
     }
