@@ -34,7 +34,7 @@ object JawscalaBuild extends Build {
   val buildSettings = Defaults.defaultSettings ++ Seq(
     organization := "fi.jawsy.jawscala",
     organizationName := "Jawsy Solutions",
-    organizationHomepage := Some(new URL("http://www.jawsy.fi")),
+    organizationHomepage := Some(new URL("http://jawsy.fi")),
     homepage := Some(new URL("http://github.com/Gekkio/jawscala")),
     licenses += ("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")),
     version := "0.1.0-SNAPSHOT",
