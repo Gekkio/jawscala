@@ -9,7 +9,7 @@ object Dependencies {
     val atmosphere = "0.7.2"
     val javaxServlet = "3.0.1"
     val lift = "2.4-M4"
-    val specs = "1.6.9"
+    val specs2 = "1.6.1"
     val vaadin = "6.7.0"
     val zk = "5.0.8"
   }
@@ -18,7 +18,7 @@ object Dependencies {
   val atmosphereRuntime = "org.atmosphere" % "atmosphere-runtime" % Versions.atmosphere
   val javaxServlet = "javax.servlet" % "javax.servlet-api" % Versions.javaxServlet
   val liftJson = "net.liftweb" %% "lift-json" % Versions.lift
-  val specs = "org.scala-tools.testing" %% "specs" % Versions.specs
+  val specs2 = "org.specs2" %% "specs2" % Versions.specs2
   val vaadin = "com.vaadin" % "vaadin" % Versions.vaadin
   val zkZk = "org.zkoss.zk" % "zk" % Versions.zk
   val zkZul = "org.zkoss.zk" % "zul" % Versions.zk
@@ -68,6 +68,7 @@ object JawscalaBuild extends Build {
           atmosphereRuntime,
           javaxServlet % "provided",
           liftJson,
+          specs2 % "test",
           zkZk,
           zkZul
         )
