@@ -5,12 +5,12 @@ import com.vaadin.ui.Tree
 
 object Trees {
 
-  def collapseListener(f: (Tree#CollapseEvent) => _) = new Tree.CollapseListener {
-    def nodeCollapse(e: Tree#CollapseEvent) = f(e)
+  def collapseListener(f: (Tree.CollapseEvent) => _) = new Tree.CollapseListener {
+    def nodeCollapse(e: Tree.CollapseEvent) = f(e)
   }
 
-  def expandListener(f: (Tree#ExpandEvent) => _) = new Tree.ExpandListener {
-    def nodeExpand(e: Tree#ExpandEvent) = f(e)
+  def expandListener(f: (Tree.ExpandEvent) => _) = new Tree.ExpandListener {
+    def nodeExpand(e: Tree.ExpandEvent) = f(e)
   }
 
   def treeItemStyleGenerator(f: (AnyRef) => String) = new Tree.ItemStyleGenerator {
