@@ -56,7 +56,7 @@ object JawscalaBuild extends Build {
       publishArtifact in (Compile, packageDoc) := false,
       publishArtifact in (Compile, packageSrc) := false
     )
-  ) aggregate(jawscalaZk, jawscalaVaadin)
+  ) aggregate(jawscalaZk, jawscalaZkAsync, jawscalaVaadin)
 
   lazy val jawscalaZk = Project(
     "jawscala-zk",
@@ -65,12 +65,25 @@ object JawscalaBuild extends Build {
       libraryDependencies ++= {
         import Dependencies._
         Seq(
-          atmosphereRuntime,
           javaxServlet % "provided",
           liftJson,
           specs2 % "test",
           zkZk,
           zkZul
+        )
+      },
+      resolvers += Resolvers.zkossRepo
+    ))
+  lazy val jawscalaZkAsync = Project(
+    "jawscala-zk-async",
+    file("zk-async"),
+    settings = buildSettings ++ Seq(
+      libraryDependencies ++= {
+        import Dependencies._
+        Seq(
+          atmosphereRuntime,
+          javaxServlet % "provided",
+          zkZk
         )
       },
       resolvers += Resolvers.zkossRepo
