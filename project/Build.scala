@@ -10,7 +10,7 @@ object Dependencies {
     val javaxServlet = "3.0.1"
     val lift = "2.4-M4"
     val specs2 = "1.6.1"
-    val vaadin = "6.7.0"
+    val vaadin = "6.7.1"
     val zk = "5.0.9"
   }
 
