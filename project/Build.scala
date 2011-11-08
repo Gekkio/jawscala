@@ -11,7 +11,7 @@ object Dependencies {
     val lift = "2.4-M4"
     val specs2 = "1.6.1"
     val vaadin = "6.7.0"
-    val zk = "5.0.8"
+    val zk = "5.0.9"
   }
 
   val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % Versions.akka
