@@ -33,15 +33,19 @@ Useful things for developers using [Vaadin](http://vaadin.com).
 
 Useful things for developers using [ZK](http://www.zkoss.org).
 
-#### Features
+### <a name="jawscala-zk-async">jawscala-zk-async</a>
 
-+ Growl-like notifications (uses [Gritter for jQuery](https://github.com/jboesch/Gritter))
+Asynchronous server push implementation based on [Atmosphere](https://github.com/Atmosphere/atmosphere)
+
+### <a name="jawscala-zk-gritter">jawscala-zk-gritter</a>
+
+Growl-like notifications (uses [Gritter for jQuery](https://github.com/jboesch/Gritter))
 
 #### Usage
 
 ##### Gritter
 
-        import fi.jawsy.jawscala.zk.Gritter
+        import fi.jawsy.jawscala.zk.gritter.Gritter
 
 Display a simple notification:
 
