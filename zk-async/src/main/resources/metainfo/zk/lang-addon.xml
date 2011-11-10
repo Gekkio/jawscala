@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<language-addon>
+	<addon-name>jawscala-zk-async</addon-name>
+	<language-name>xul/html</language-name>
+
+	<javascript package="jawscala.async" merge="true" />
+</language-addon>

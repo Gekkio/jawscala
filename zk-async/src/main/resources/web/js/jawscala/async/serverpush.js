@@ -1,18 +1,18 @@
 (function() {
-  jawscala.startServerPush = function(dtid, timeout) {
+  jawscala.async.startServerPush = function(dtid, timeout) {
     var dt = zk.Desktop.$(dtid);
     if (dt._serverpush)
       dt._serverpush.stop();
 
-    var spush = new jawscala.ServerPush(dt, timeout);
+    var spush = new jawscala.async.ServerPush(dt, timeout);
     spush.start();
   };
-  jawscala.stopServerPush = function(dtid) {
+  jawscala.async.stopServerPush = function(dtid) {
     var dt = zk.Desktop.$(dtid);
     if (dt._serverpush)
       dt._serverpush.stop();
   };
-  jawscala.ServerPush = zk.$extends(zk.Object, {
+  jawscala.async.ServerPush = zk.$extends(zk.Object, {
     desktop: null,
     active: false,
     timeout: 300000,

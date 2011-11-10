@@ -73,14 +73,14 @@ class AtmosphereServerPush extends ServerPush {
     this.desktop = Option(desktop)
     for (desktop <- this.desktop) {
       log.debug("Starting server push for " + desktop)
-      Clients.response("jawscala.serverpush",
-        new AuScript(null, "jawscala.startServerPush('" + desktop.getId() + "', " + AtmosphereServerPush.timeout + ");"));
+      Clients.response("jawscala.async.serverpush",
+        new AuScript(null, "jawscala.async.startServerPush('" + desktop.getId() + "', " + AtmosphereServerPush.timeout + ");"));
     }
   }
   def stop() {
     for (desktop <- this.desktop) {
       log.debug("Stopping server push for " + desktop)
-      Clients.response("jawscala.serverpush", new AuScript(null, "jawscala.stopServerPush('" + desktop.getId() + "');"));
+      Clients.response("jawscala.async.serverpush", new AuScript(null, "jawscala.async.stopServerPush('" + desktop.getId() + "');"));
       this.desktop = None
     }
   }
