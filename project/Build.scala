@@ -8,7 +8,6 @@ object Dependencies {
     val akka = "1.2"
     val atmosphere = "0.7.2"
     val javaxServlet = "3.0.1"
-    val lift = "2.4-M4"
     val sjson = "0.15"
     val specs2 = "1.6.1"
     val vaadin = "6.7.1"
@@ -18,7 +17,6 @@ object Dependencies {
   val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % Versions.akka
   val atmosphereRuntime = "org.atmosphere" % "atmosphere-runtime" % Versions.atmosphere
   val javaxServlet = "javax.servlet" % "javax.servlet-api" % Versions.javaxServlet
-  val liftJson = "net.liftweb" %% "lift-json" % Versions.lift
   val sjson = "net.debasishg" %% "sjson" % Versions.sjson
   val specs2 = "org.specs2" %% "specs2" % Versions.specs2
   val vaadin = "com.vaadin" % "vaadin" % Versions.vaadin
@@ -58,7 +56,7 @@ object JawscalaBuild extends Build {
       publishArtifact in (Compile, packageDoc) := false,
       publishArtifact in (Compile, packageSrc) := false
     )
-  ) aggregate(jawscalaZk, jawscalaZkAsync, jawscalaVaadin)
+  ) aggregate(jawscalaZk, jawscalaZkAsync, jawscalaZkGritter, jawscalaVaadin)
 
   lazy val jawscalaZk = Project(
     "jawscala-zk",
@@ -68,8 +66,6 @@ object JawscalaBuild extends Build {
         import Dependencies._
         Seq(
           javaxServlet % "provided",
-          sjson,
-          specs2 % "test",
           zkZk,
           zkZul
         )
@@ -85,6 +81,21 @@ object JawscalaBuild extends Build {
         Seq(
           atmosphereRuntime,
           javaxServlet % "provided",
+          zkZk
+        )
+      },
+      resolvers += Resolvers.zkossRepo
+    ))
+  lazy val jawscalaZkGritter = Project(
+    "jawscala-zk-gritter",
+    file("zk-gritter"),
+    settings = buildSettings ++ Seq(
+      libraryDependencies ++= {
+        import Dependencies._
+        Seq(
+          javaxServlet % "provided",
+          sjson,
+          specs2 % "test",
           zkZk
         )
       },

@@ -1,5 +1,6 @@
 package fi.jawsy.jawscala
 package zk
+package gritter
 
 import sjson.json._
 import JsonSerialization._

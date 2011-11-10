@@ -1,5 +1,6 @@
 package fi.jawsy.jawscala
 package zk
+package gritter
 
 import org.specs2.mutable._
 

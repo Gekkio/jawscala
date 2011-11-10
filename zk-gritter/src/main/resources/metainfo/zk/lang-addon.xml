@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <language-addon>
-	<addon-name>jawscala</addon-name>
+	<addon-name>jawscala-gritter</addon-name>
 	<language-name>xul/html</language-name>
 
 	<javascript src="~./jawscala/ext/gritter/js/jquery.gritter.min.js" />
