@@ -7,6 +7,7 @@ object Dependencies {
   object Versions {
     val akka = "1.2"
     val atmosphere = "0.7.2"
+    val dispatch = "0.8.6"
     val javaxServlet = "3.0.1"
     val sjson = "0.15"
     val specs2 = "1.6.1"
@@ -16,8 +17,8 @@ object Dependencies {
 
   val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % Versions.akka
   val atmosphereRuntime = "org.atmosphere" % "atmosphere-runtime" % Versions.atmosphere
+  val dispatchJson = "net.databinder" %% "dispatch-json" % Versions.dispatch
   val javaxServlet = "javax.servlet" % "javax.servlet-api" % Versions.javaxServlet
-  val sjson = "net.debasishg" %% "sjson" % Versions.sjson
   val specs2 = "org.specs2" %% "specs2" % Versions.specs2
   val vaadin = "com.vaadin" % "vaadin" % Versions.vaadin
   val zkZk = "org.zkoss.zk" % "zk" % Versions.zk
@@ -94,12 +95,16 @@ object JawscalaBuild extends Build {
         import Dependencies._
         Seq(
           javaxServlet % "provided",
-          sjson,
+          dispatchJson,
           specs2 % "test",
           zkZk
         )
       },
-      resolvers += Resolvers.zkossRepo
+      resolvers += Resolvers.zkossRepo,
+      ivyXML :=
+        <dependencies>
+          <exclude org="org.apache.httpcomponents" module="httpclient" />
+        </dependencies>
     ))
   lazy val jawscalaVaadin = Project(
     "jawscala-vaadin",
