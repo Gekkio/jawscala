@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package name="jawscala.cleditor" language="xul/html" depends="zul">
+  <widget name="Cleditor" />
+</package>

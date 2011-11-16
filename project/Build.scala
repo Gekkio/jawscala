@@ -57,7 +57,13 @@ object JawscalaBuild extends Build {
       publishArtifact in (Compile, packageDoc) := false,
       publishArtifact in (Compile, packageSrc) := false
     )
-  ) aggregate(jawscalaZk, jawscalaZkAsync, jawscalaZkGritter, jawscalaVaadin)
+  ) aggregate(
+    jawscalaZk,
+    jawscalaZkAsync,
+    jawscalaZkCleditor,
+    jawscalaZkGritter,
+    jawscalaVaadin
+  )
 
   lazy val jawscalaZk = Project(
     "jawscala-zk",
@@ -83,6 +89,20 @@ object JawscalaBuild extends Build {
           atmosphereRuntime,
           javaxServlet % "provided",
           zkZk
+        )
+      },
+      resolvers += Resolvers.zkossRepo
+    ))
+  lazy val jawscalaZkCleditor = Project(
+    "jawscala-zk-cleditor",
+    file("zk-cleditor"),
+    settings = buildSettings ++ Seq(
+      libraryDependencies ++= {
+        import Dependencies._
+        Seq(
+          javaxServlet % "provided",
+          specs2 % "test",
+          zkZul
         )
       },
       resolvers += Resolvers.zkossRepo
