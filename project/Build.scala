@@ -16,8 +16,8 @@ object Dependencies {
   }
 
   val akkaActor = "se.scalablesolutions.akka" % "akka-actor" % Versions.akka
-  val atmosphereRuntime = "org.atmosphere" % "atmosphere-runtime" % Versions.atmosphere
-  val dispatchJson = "net.databinder" %% "dispatch-json" % Versions.dispatch
+  val atmosphereRuntime = "org.atmosphere" % "atmosphere-runtime" % Versions.atmosphere exclude("org.atmosphere", "atmosphere-ping")
+  val dispatchJson = "net.databinder" %% "dispatch-json" % Versions.dispatch exclude("org.apache.httpcomponents", "httpclient")
   val javaxServlet = "javax.servlet" % "javax.servlet-api" % Versions.javaxServlet
   val specs2 = "org.specs2" %% "specs2" % Versions.specs2
   val vaadin = "com.vaadin" % "vaadin" % Versions.vaadin
