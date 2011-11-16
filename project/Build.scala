@@ -100,11 +100,7 @@ object JawscalaBuild extends Build {
           zkZk
         )
       },
-      resolvers += Resolvers.zkossRepo,
-      ivyXML :=
-        <dependencies>
-          <exclude org="org.apache.httpcomponents" module="httpclient" />
-        </dependencies>
+      resolvers += Resolvers.zkossRepo
     ))
   lazy val jawscalaVaadin = Project(
     "jawscala-vaadin",
