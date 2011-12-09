@@ -16,6 +16,7 @@ jawscala.cleditor.Cleditor = zk.$extends(zk.Widget, {
     this.value = value;
     if (this.desktop) {
       this._inner.val(this.value);
+      this._editor.updateFrame();
     }
   },
   isDisabled: function() {
