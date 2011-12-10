@@ -6,7 +6,7 @@ import Keys._
 object Dependencies {
   object Versions {
     val akka = "1.2"
-    val atmosphere = "0.7.2"
+    val atmosphere = "0.8.1"
     val dispatch = "0.8.6"
     val javaxServlet = "3.0.1"
     val sjson = "0.15"
