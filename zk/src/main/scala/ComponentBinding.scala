@@ -26,7 +26,7 @@ object ComponentBinding {
   }
 
   object Read {
-    def apply[C <: Component, T](re: List[String], r: (C) => (T) => Unit) = new Read[C, T] {
+    def apply[C <: Component, T](re: List[String], r: (C) => (T) => Unit) = new Read[C, T] with Serializable {
       val readEvents = re
       def setter = r
     }
@@ -38,7 +38,7 @@ object ComponentBinding {
   }
 
   object Write {
-    def apply[C <: Component, T](we: List[String], w: (C) => (T)) = new Write[C, T] {
+    def apply[C <: Component, T](we: List[String], w: (C) => (T)) = new Write[C, T] with Serializable {
       val writeEvents = we
       def getter = w
     }
@@ -46,8 +46,8 @@ object ComponentBinding {
 
   case class ReadWrite[C <: Component, T](readEvents: List[String], getter: (C) => T, writeEvents: List[String], setter: (C) => (T) => Unit) extends Read[C, T] with Write[C, T]
 
-  def bindRead[C <: Component, T](c: C, readFunction: () => T, deferrable: Boolean = false)(implicit r: Read[C, T]): ReadBinder[C, T] = new ReadBinder[C, T] {
-    val readEventListener: EventListener = new EventListener with Deferrable {
+  def bindRead[C <: Component, T](c: C, readFunction: () => T, deferrable: Boolean = false)(implicit r: Read[C, T]): ReadBinder[C, T] = new ReadBinder[C, T] with Serializable {
+    val readEventListener: EventListener = new EventListener with Deferrable with Serializable {
       def onEvent(event: Event) {
         read
       }
@@ -60,8 +60,8 @@ object ComponentBinding {
     }
   }
 
-  def bindWrite[C <: Component, T](c: C, writeFunction: (T) => _, deferrable: Boolean = false)(implicit w: Write[C, T]): WriteBinder[C, T] = new WriteBinder[C, T] {
-    val writeEventListener: EventListener = new EventListener with Deferrable {
+  def bindWrite[C <: Component, T](c: C, writeFunction: (T) => _, deferrable: Boolean = false)(implicit w: Write[C, T]): WriteBinder[C, T] = new WriteBinder[C, T] with Serializable {
+    val writeEventListener: EventListener = new EventListener with Deferrable with Serializable {
       def onEvent(event: Event) {
         write
       }
@@ -74,7 +74,7 @@ object ComponentBinding {
     }
   }
 
-  def bind[C <: Component, T](c: C, readFunction: () => T, writeFunction: (T) => _, deferrable: Boolean = false)(implicit r: Read[C, T], w: Write[C, T]): ReadWriteBinder[C, T] = new ReadWriteBinder[C, T] {
+  def bind[C <: Component, T](c: C, readFunction: () => T, writeFunction: (T) => _, deferrable: Boolean = false)(implicit r: Read[C, T], w: Write[C, T]): ReadWriteBinder[C, T] = new ReadWriteBinder[C, T] with Serializable {
     private val readBinder = bindRead(c, readFunction, deferrable)(r)
     private val writeBinder = bindWrite(c, writeFunction, deferrable)(w)
 

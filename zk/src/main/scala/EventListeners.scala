@@ -6,7 +6,7 @@ import org.zkoss.zk.ui.event.{ Event, EventListener }
 
 object EventListeners {
 
-  implicit def function1EventListener[E <: Event](f: (E) => _) = new EventListener {
+  implicit def function1EventListener[E <: Event](f: (E) => _) = new EventListener with Serializable {
     def onEvent(e: Event) = f(e.asInstanceOf[E])
   }
 
