@@ -25,6 +25,12 @@ jawscala.cleditor.Cleditor = zk.$extends(zk.Widget, {
   getValue: function() {
     return this.value;
   },
+  setDomVisible_: function(n, visible, opts) {
+    this.$supers('setDomVisible_', arguments);
+    if (visible && this.desktop) {
+      this._editor.refresh();
+    }
+  },
   bind_: function(desktop, skipper, after) {
     this.$supers('bind_', arguments);
     this._inner = jq('<textarea></textarea>').appendTo(this.$n());
@@ -49,7 +55,7 @@ jawscala.cleditor.Cleditor = zk.$extends(zk.Widget, {
     this._editor = null;
     this.$supers('unbind_', arguments);    
   },
-  
+
   redraw: function(out) {
     out.push('<div ', this.domAttrs_(), '>');
     out.push('</div>');
