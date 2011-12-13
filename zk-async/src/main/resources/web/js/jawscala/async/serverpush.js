@@ -16,10 +16,20 @@
     desktop: null,
     active: false,
     timeout: 300000,
+    delay: 1000,
+    failures: 0,
 
     $init: function(desktop, timeout) {
       this.desktop = desktop;
       this.timeout = timeout;
+    },
+    _schedule: function() {
+      if (this.failures < 10) {
+        var delay = this.delay * Math.pow(2, Math.min(this.failures, 7));
+        setTimeout(this.proxy(this._send), delay);
+      } else {
+        this.stop();
+      }
     },
     _send: function() {
       if (!this.active)
@@ -39,11 +49,13 @@
         dataType: "text/plain",
         timeout: me.timeout,
         error: function(jqxhr, textStatus, errorThrown) {
-          setTimeout(me.proxy(me._send), 1000);
+          me.failures += 1;
+          me._schedule();
         },
         success: function(data) {
           zAu.cmd0.echo(me.desktop);
-          setTimeout(me.proxy(me._send), 1000);
+          me.failures = 0;
+          me._schedule();
         }
       });
       this._req = jqxhr;
