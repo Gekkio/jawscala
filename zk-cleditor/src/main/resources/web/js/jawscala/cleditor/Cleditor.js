@@ -53,9 +53,10 @@ jawscala.cleditor.Cleditor = zk.$extends(zk.Widget, {
     }
   },
   unbind_: function(skipper, after) {
+    this._editor.remove();
+    this._editor = null;
     this._inner.remove();
     this._inner = null;
-    this._editor = null;
     zWatch.unlisten({
       onShow: this
     });
