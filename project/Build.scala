@@ -38,7 +38,7 @@ object JawscalaBuild extends Build {
     organizationHomepage := Some(new URL("http://jawsy.fi")),
     homepage := Some(new URL("http://github.com/Gekkio/jawscala")),
     licenses += ("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt")),
-    version := "0.2.0-SNAPSHOT",
+    version := "0.2.0",
     scalaVersion := "2.9.1",
     publishTo <<= (version) { version: String =>
       val nexus = "https://jawsy.fi/nexus/content/repositories/"
