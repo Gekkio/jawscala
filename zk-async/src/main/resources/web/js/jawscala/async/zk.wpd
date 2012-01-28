@@ -1,4 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<package name="jawscala.async" language="xul/html">
-	<script src="serverpush.js" />
-</package>
