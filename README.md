@@ -1,5 +1,5 @@
-jawscala
-=================
+Jawscala: Jawsy Solutions libraries for Scala 2.9+
+==================================================
 
 ## Introduction
 
@@ -32,41 +32,3 @@ Useful things for developers using [Vaadin](http://vaadin.com).
 ### <a name="jawscala-zk">jawscala-zk</a>
 
 Useful things for developers using [ZK](http://www.zkoss.org).
-
-### <a name="jawscala-zk-async">jawscala-zk-async</a>
-
-Asynchronous server push implementation based on [Atmosphere](https://github.com/Atmosphere/atmosphere)
-
-### <a name="jawscala-zk-gritter">jawscala-zk-gritter</a>
-
-Growl-like notifications (uses [Gritter for jQuery](https://github.com/jboesch/Gritter))
-
-#### Usage
-
-##### Gritter
-
-        import fi.jawsy.jawscala.zk.gritter.Gritter
-
-Display a simple notification:
-
-        Gritter.add(title = "My title", text = "My text")
-
-Display a sticky notification:
-
-        Gritter.add(title = "My title", text = "My text", sticky = true)
-
-Display a notification with image (supports ZK-style URLs, for example `~./classpath_image.png`):
-
-        Gritter.add(title = "My title", text = "My text", image = "/image.png")
-
-Display a notification for x milliseconds:
-
-        Gritter.add(title = "My title", text = "My text", time = 9000)
-
-Display a notification with a custom CSS class:
-
-        Gritter.add(title = "My title", text = "My text", sclass = "error")
-
-Removing all notifications from screen (including sticky ones):
-
-        Gritter.removeAll()
